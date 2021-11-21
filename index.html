@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+<script>
+  window.TrackJS && TrackJS.install({ 
+    token: "a8f81222fd8244a2a212046e83639663"
+    // for more configuration options, see https://docs.trackjs.com
+  });                        
+</script>
+                        
+                        
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,7 +96,15 @@
     </section>
   </main>
 
-  <script>
+<script>
+                        
+    class divbyzeroError extends Error{
+      constructor(message){
+        super(message);
+        this.name = "divbyzeroError";
+      }
+    }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -95,13 +112,108 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try{
+        if(operator == "/" && secondNum == "0"){
+          throw new divbyzeroError("You divided by zero :(");
+        }
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      }
+      catch(err){
+        alert("Your input was bad");
+        alert(err.name);
+        alert(err.message);
+      }
+      finally{
+        alert("computation finished.");
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    (errorBtns[0]).addEventListener("click", () => {
+      console.log("Console Log Demo");
+    });
+
+    (errorBtns[1]).addEventListener("click", () => {
+      console.error("Console Error Demo");
+    });
+
+    (errorBtns[2]).addEventListener("click", () => {
+      console.count("Count Button");
+    });
+
+    (errorBtns[3]).addEventListener("click", () => {
+      console.warn("Console Warn Button");
+    });
+
+    (errorBtns[4]).addEventListener("click", () => {
+      var number = 2;
+      const errorMsg = "The number does not equal 3";
+      console.assert(number == 3, {number, errorMsg});
+    });
+
+    (errorBtns[5]).addEventListener("click", () => {
+      console.clear();
+    });
+
+    (errorBtns[6]).addEventListener("click", () => {
+      console.dir(errorBtns[6]);
+    });
+
+    (errorBtns[7]).addEventListener("click", () => {
+      console.dirxml(errorBtns[7]);
+    });
+
+    (errorBtns[8]).addEventListener("click", () => {
+      console.group("console.group");
+    });
+    (errorBtns[9]).addEventListener("click", () => {
+      console.groupEnd("console.group");
+    });
+
+    (errorBtns[10]).addEventListener("click", () => {
+      console.table([
+        {
+          name: "Software Engineering",
+          num: 110
+        },
+        {
+          name: "Programming Languages and Paradigms",
+          num: 130
+        },
+        {
+          name: "Advanced Software Engineering",
+          num: 112
+        },
+      ]);
+    });
+
+    (errorBtns[11]).addEventListener("click", () => {
+      console.time(["Timer Button"]);
+    });
+    (errorBtns[12]).addEventListener("click", () => {
+      console.timeEnd(["Timer Button"]);
+    });
+    (errorBtns[13]).addEventListener("click", function handleBtnClick() {
+      const deep = () => { deeper(); };
+      const deeper = () => { deepest(); };
+      const deepest = () => { console.trace(); };
+      deep();
+
+    });
+
+
+    (errorBtns[14]).addEventListener("click", () => {
+      boom();
+    });
+
+    window.addEventListener("error", (err) => {
+      console.log("There was the following Error:" + err.message);
+    });
+
+
   </script>
 </body>
 
